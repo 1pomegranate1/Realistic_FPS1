@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour
-{
+{ // SC-6794-49ZV-Y93J-MT3T-9NDJ
     Camera realMainCamera;
     [SerializeField]
     Camera defaultCamera, aimCamera;
