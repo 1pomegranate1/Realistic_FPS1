@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class CanvasManager : MonoBehaviour
 {
     //static public 
     static public bool UIActive = true;
+    
     [SerializeField]
     GameObject visiblePanel;
     // Start is called before the first frame update
@@ -39,4 +41,5 @@ public class CanvasManager : MonoBehaviour
         else
             Cursor.lockState = CursorLockMode.Locked;
     }
+   
 }

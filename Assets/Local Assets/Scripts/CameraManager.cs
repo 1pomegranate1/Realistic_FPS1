@@ -4,8 +4,8 @@ using System.Security.Cryptography;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour
-{ // SC-6794-49ZV-Y93J-MT3T-9NDJ
-    Camera realMainCamera;
+{
+    //Camera realMainCamera;
     [SerializeField]
     Camera defaultCamera, aimCamera;
     [SerializeField]
@@ -24,7 +24,8 @@ public class CameraManager : MonoBehaviour
             HitManager.targetCam = aimCamera;
         }
     }
-    RaycastHit raycastHit;
+
+    
     void Update()
     {
         if (Input.GetMouseButtonDown(1) && CanvasManager.UIActive == false)
@@ -43,15 +44,37 @@ public class CameraManager : MonoBehaviour
                 HitManager.targetCam = defaultCamera;
             }
         }
-        if (CanvasManager.UIActive == false && defaultCamera.gameObject.activeSelf && Physics.Raycast(defaultCamera.transform.position, defaultCamera.transform.forward, out raycastHit, 2.7f,layerMask))
+        RaycastHit[] hits = Physics.SphereCastAll(defaultCamera.transform.position, 2.7f ,Vector3.forward,2.7f,LayerMask.GetMask("Item"));
+        RaycastHit raycastHit;
+                //Debug.Log("item"+ hits.Length);
+        if (CanvasManager.UIActive == false && defaultCamera.gameObject.activeSelf && hits.Length > 0)
         {
-            Debug.Log(raycastHit.transform.gameObject.name);
-
-            Debug.DrawLine(defaultCamera.transform.position, raycastHit.point,Color.red,0.1f);
-            if (raycastHit.transform.gameObject.CompareTag("Item"))
+            foreach (var item in hits)
             {
-                Debug.DrawLine(defaultCamera.transform.position, raycastHit.point, Color.blue, 0.1f );
+                float angle = Vector3.Dot(item.transform.position, defaultCamera.transform.forward + transform.position);
+                Debug.DrawLine(defaultCamera.transform.position, item.transform.position, Color.red, 1f);
+                    Debug.Log(angle);
+                if(angle < 15&& angle > -15)
+                {
+
+                   
+                }
+
             }
+
+            if (Physics.Raycast(defaultCamera.transform.position, defaultCamera.transform.forward, out raycastHit, 2.7f, layerMask) && raycastHit.transform.gameObject.CompareTag("Item")) 
+            {
+                Debug.DrawLine(defaultCamera.transform.position, raycastHit.point, Color.blue, 0.1f);
+                if (HUDManager.itemCrossHairActive == false)
+                    HUDManager.itemCrossHairActive = true;
+            }
+            else if (HUDManager.itemCrossHairActive)
+                HUDManager.itemCrossHairActive = false;
+        }
+        else if (defaultCamera.gameObject.activeSelf == false)
+        {
+            if (HUDManager.itemCrossHairActive)
+                HUDManager.itemCrossHairActive = false;
         }
     }
 }

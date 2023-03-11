@@ -8,15 +8,16 @@ using static WeaponScript;
 
 public class HUDManager : MonoBehaviour
 {
+    static public bool itemCrossHairActive = false;
+
+    bool lastItemCrossHairActive;
     [SerializeField]
     WeaponScript weaponScript;
     public static HUDManager instance;  
     [SerializeField]
     GameObject MagazineHUDPrefab;
     [SerializeField]
-    GameObject installMagazineHUD;
-    [SerializeField]
-    GameObject RoundInChamberHUD;
+    GameObject RoundInChamberHUD, ItemCrossHairHUD, installMagazineHUD;
     [SerializeField]
     Transform HUDGroup;
     [SerializeField]
@@ -40,6 +41,7 @@ public class HUDManager : MonoBehaviour
     }
     void Update()
     {
+        ItemCrossHairActive();
         if (show == false)
             return;
 
@@ -53,7 +55,14 @@ public class HUDManager : MonoBehaviour
         else if(showLerfTime <= paidTime)
         {
             roundTypeHUDText.color = new Color(1,1,1, showLerfTime/paidTime);
-        }        
+        }
+    }
+    void ItemCrossHairActive()
+    {
+        if (lastItemCrossHairActive == itemCrossHairActive)
+            return;
+        ItemCrossHairHUD.SetActive(itemCrossHairActive);
+        lastItemCrossHairActive = itemCrossHairActive;
     }
 
     public void RoundTypeHUDShow(int targetType) // 0 => roundInChamber, 1 => magazineLastRound

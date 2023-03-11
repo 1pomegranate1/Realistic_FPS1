@@ -18,12 +18,12 @@ public class BulletScript : MonoBehaviour
     private void Start()
     {
         rb.velocity = transform.forward * 730f;
+        transform.up = rb.velocity;
     }
     float delayTime;
     private void FixedUpdate()
     {
         delayTime = delayTime + Time.fixedDeltaTime;
-        transform.up = rb.velocity;
         if (transform.position.y < -500 || delayTime > 10)
         {
             trailScript.delaytime = 10f; 

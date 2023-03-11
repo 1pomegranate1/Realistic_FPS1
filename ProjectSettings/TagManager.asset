@@ -6,10 +6,8 @@ TagManager:
   tags:
   - Wall
   - Metal
-  - Blood
   - Dirt
   - Concrete
-  - ExplosiveBarrel
   - Target
   - GasTank
   - Metal (Static)
@@ -34,7 +32,7 @@ TagManager:
   - Post Processing
   - Post Processing Weapon
   - Post Processing Scope
-  - Invisible Wall
+  - Item
   - Projectile
   - 
   - 

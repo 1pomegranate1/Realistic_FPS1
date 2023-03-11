@@ -270,7 +270,7 @@ public class WeaponScript : MonoBehaviour
     {
         if (CanvasManager.UIActive || roundInChamber == null)
         {
-            Debug.Log("NoAmmo");
+            //Debug.Log("NoAmmo");
             return;
         }
         switch (triggerType)
