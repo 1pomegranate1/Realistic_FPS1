@@ -51,13 +51,13 @@ public class CameraManager : MonoBehaviour
         {
             foreach (var item in hits)
             {
-                float angle = Vector3.Dot(item.transform.position, defaultCamera.transform.forward + transform.position);
+                float angle = Vector3.Dot((item.transform.position - defaultCamera.transform.position).normalized, defaultCamera.transform.forward);
                 Debug.DrawLine(defaultCamera.transform.position, item.transform.position, Color.red, 1f);
-                    Debug.Log(angle);
-                if(angle < 15&& angle > -15)
+                if(angle >= 0.99f)
                 {
 
-                   
+                    Debug.Log(angle);
+
                 }
 
             }

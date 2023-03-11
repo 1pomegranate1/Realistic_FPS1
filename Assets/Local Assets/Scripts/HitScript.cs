@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,9 +21,14 @@ public class HitScript : MonoBehaviour
     public bool headShot;
     public bool firstHit;
 
+    float screenWidth;
+    float screenHeight;
     private void Start()
     {
+        Debug.Log(Screen.width);
         Image = GetComponent<Image>();
+        screenWidth = Screen.width;
+        screenHeight = Screen.height;
         if (firstHit == false)
         {
             DistanceText.gameObject.SetActive(false);
@@ -44,10 +50,20 @@ public class HitScript : MonoBehaviour
         screenPoint = HitManager.targetCam.WorldToScreenPoint(hitPosition + offset);
         if (screenPoint.z < 0)
         {
-            screenPoint *= -1;
+            screenPoint *= -1;          
         }
         else
-        transform.position = screenPoint;//new Vector3(screenPoint.x, screenPoint.y, transform.position.z)}
+        {
+            transform.position = screenPoint;//new Vector3(screenPoint.x, screenPoint.y, transform.position.z)}
+            if(transform.position.x > screenWidth + screenWidth * 0.01f ||
+                transform.position.x < 0 - screenWidth * 0.01f ||
+                transform.position.y > screenHeight + screenHeight * 0.01f ||
+                transform.position.y < 0 - screenHeight * 0.01f)
+            { 
+                Image.enabled = false;
+            }
+            else Image.enabled = true;
+        }
     }
     public void DestroyHit()
     {

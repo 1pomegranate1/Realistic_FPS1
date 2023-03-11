@@ -73,24 +73,26 @@ public class PlayerMovement : MonoBehaviour
         Vector2 RotNext;
         float deltaCoef = Time.smoothDeltaTime * 50f;
 
+        // 마우스 회전시 총기 관성    
         aimInertia = new Vector2(   aimInertia.x + inertiaRecoveryCurve.Evaluate(aimInertia.x / aimMaxInertia) * deltaTime * (aimInertia.x < 0 ? 1f : -1f) * 70,
                                     aimInertia.y + inertiaRecoveryCurve.Evaluate(aimInertia.y / aimMaxInertia) * deltaTime * (aimInertia.y < 0 ? 1f : -1f) * 70);
         if (recoilRecoveryDelay <= 0)
         {
+            //총기 반동
             aimRecoil = new Vector2(aimRecoil.x + recoilRecoveryCurve.Evaluate(aimRecoil.x / aimMaxRecoil) * deltaTime * (aimRecoil.x < 0 ? 1f : -1f) * 40,
                                         aimRecoil.y + recoilRecoveryCurve.Evaluate(aimRecoil.y / aimMaxRecoil) * deltaTime * (aimRecoil.y < 0 ? 1f : -1f) * 40);
         }
         else recoilRecoveryDelay -= Time.deltaTime;
         
-
+        // 카메라 회전
         float yRotNext = yRotPrev + _rotation.x * deltaCoef;
-        RotNext = (new Vector2(xRotPrev + _rotation.y * deltaCoef * mouseSenstive, yRotPrev + _rotation.x * deltaCoef * mouseSenstive));
+        RotNext = (new Vector2(xRotPrev + _rotation.y * mouseSenstive, yRotPrev + _rotation.x * mouseSenstive)); 
         if(RotNext.x > 180f)
         {
             RotNext = new Vector2(RotNext.x -= 360, RotNext.y);
         }
-        aimInertia = new Vector2(   Mathf.Clamp(aimInertia.x + -_rotation.x * deltaTime * 40, -aimMaxInertia, aimMaxInertia),
-                                    Mathf.Clamp(aimInertia.y + -_rotation.y * deltaTime * 40, -aimMaxInertia, aimMaxInertia));
+        aimInertia = new Vector2(   Mathf.Clamp(aimInertia.x + -_rotation.x * 0.16f, -aimMaxInertia, aimMaxInertia),
+                                    Mathf.Clamp(aimInertia.y + -_rotation.y * 0.16f, -aimMaxInertia, aimMaxInertia));
         plusDirection = aimInertia + new Vector2(aimRecoil.x, -aimRecoil.y);
 
         Camera.transform.localEulerAngles = Vector3.right * RotNext.x;
@@ -102,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void OtherInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)) // 스페이스바: 슬로우모션
         {
             if (Time.timeScale != 1)
                 Time.timeScale = 1f;
